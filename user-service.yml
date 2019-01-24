@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: user-service
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://config-service:8888
+  zipkin:
+    baseUrl: http://tracing-server:9411
+
+eureka:
+  instance:
+    # enable to register multiple app instances with a random server port
+    instance-id: ${spring.application.name}:${random.uuid}
+---
+spring:
+  profiles: default
+  cloud:
+    config:
+      uri: http://localhost:8888
+spring.profiles.active: development
+---
+spring:
+  profiles: cloud
+  cloud:
+    config:
+      uri: ${vcap.services.config-service.credentials.uri:http://localhost:8888}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-server:8761/eureka/
