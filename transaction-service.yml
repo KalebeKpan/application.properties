@@ -1,5 +1,16 @@
 server:
-  port: 8181
+  port: 8383  
+
+
+security:
+  oauth2:
+    client:
+      clientId: transaction-service
+      clientSecret: ${TRANSACTION_SERVICE_PASSWORD}
+      accessTokenUri: http://user-service:8181/user/oauth/token
+      grant-type: client_credentials
+      scope: server
+      
 
 spring:
   profiles: default
@@ -13,14 +24,11 @@ spring:
   profiles: default
   zipkin:
     baseUrl: http://tracing-server:9411
-    
-    
+           
+
 eureka:
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://eureka-server:8761/eureka/
-      
-
-  
